@@ -1,13 +1,18 @@
 name: "UPDATE-BASELINE"
-host: "localhost"
-port: 6379
-graph: "g"
-dataset: "single_node.rdb"
-RPS: 0
-clients: 32
-threads: 4
-connections: 32
-requests: 10
+ci:
+  terraform:
+    - aws/tf-oss-redisgraph-standalone-r5
+dbconfig:
+  - dataset: "datasets/single_node.rdb"
+clientconfig:
+  - graph: "g"
+  - rps: 0
+  - clients: 32
+  - threads: 4
+  - connections: 32
+  - requests: 1000000
 queries:
   - { q: "MATCH (n) SET n.v = 1", ratio: 1 }
-expectations: { avg_latency: 0.6, throughput: 20000 }
+expectations: 
+  - le: { OverallClientQuantiles.q50: 0.6 }
+  - ge: { OverallQueryRates.Total: 20000 }

@@ -208,6 +208,16 @@ jobs:
           name: Run QA Automation
           command: MODULE_VERSION=$CIRCLE_BRANCH VERBOSE=1 TEST=nightly QUICK=1 ./tests/qa/run
 
+  performance_ci_automation:
+    docker:
+      - image: 'redisfab/rmbuilder:6.0.9-x64-bionic'
+    steps:
+      - attach_workspace:
+          at: /workspace
+      - run:
+          name: Install remote benchmark dependencies
+          command: ./tests/benchmarks/aws/install_deps.sh
+
 
 on-any-branch: &on-any-branch
   filters:
@@ -268,6 +278,9 @@ workflows:
           <<: *on-version-tags
           requires:
             - package_release
+      - performance_ci_automation:
+          requires:
+            - build
 
   nightly:
     triggers:

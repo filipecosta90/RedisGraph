@@ -1,0 +1,5 @@
+python_terraform==0.10.1
+pysftp==0.2.9
+paramiko==2.7.2
+GitPython==3.1.12
+PyYAML==5.4.1
