@@ -110,7 +110,13 @@ jobs:
             - '*.so'
             - ramp.yml
             - build
-
+  build_memcheck:
+    docker:
+      - image: 'redisfab/rmbuilder:6.0.9-x64-bionic'
+    steps:
+      steps:
+      - attach_workspace:
+          at: /workspace
       - run:
           name: Test for memory leaks
           command: |
@@ -260,14 +266,20 @@ workflows:
     jobs:
       - build:
           <<: *on-any-branch
+      - build_memcheck:
+          <<: *on-any-branch
+          requires:
+            - build
       - package_branch:
           <<: *on-master
           requires:
             - build
+            - build_memcheck
       - package_release:
           <<: *on-version-tags
           requires:
             - build
+            - build_memcheck
       - deploy_branch:
           requires:
             - package_branch
@@ -279,6 +291,7 @@ workflows:
           requires:
             - package_release
       - performance_ci_automation:
+          <<: *on-any-branch
           requires:
             - build
 
