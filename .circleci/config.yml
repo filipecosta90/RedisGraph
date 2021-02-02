@@ -114,7 +114,6 @@ jobs:
     docker:
       - image: 'redisfab/rmbuilder:6.0.9-x64-bionic'
     steps:
-      steps:
       - attach_workspace:
           at: /workspace
       - run:
