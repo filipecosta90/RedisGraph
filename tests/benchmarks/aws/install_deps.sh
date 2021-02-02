@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo apt install -y zip
+apt install -y zip
 
 # Ensure terraform is available
 TF_EXE_FILE_NAME=${TF_EXE_FILE_NAME:-$(which terraform)}
@@ -8,7 +8,7 @@ if [[ -z "${TF_EXE_FILE_NAME}" ]]; then
     echo "Downloading terraform..."
     wget https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip
     unzip terraform_0.13.5_linux_amd64.zip
-    sudo mv terraform /usr/local/bin
+    mv terraform /usr/local/sbin
     rm terraform_0.13.5_linux_amd64.zip
 
 fi
